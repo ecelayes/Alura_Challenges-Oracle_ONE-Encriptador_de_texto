@@ -6,10 +6,18 @@ const outputText = document.querySelector(".output-text");
 outputText.style.display = "none";
 outputInfo.style.display = "block";
 
+function validateBlankMessage(message) {
+    let validator = message;
+    if (validator == "") {
+        alert("No se ha ingresado ningún mensaje");
+        return true;
+    }
+}
+
 function validateMessage(message) {
     let validator = message.match(/^[a-z\s]*$/);
     if (!validator || validator === 0) {
-        alert("Solo son permitidas letras minúsculas y sin acentos")
+        alert("Solo son permitidas letras minúsculas y sin acentos");
         location.reload();
         return true;
     }
@@ -42,21 +50,26 @@ function switchOutputText(outText) {
 }
 
 function btnEncrypt() {
-    if (!validateMessage(inputMessage.value)) {
-        switchOutputInfo(outputInfo.style.display)
-        const encryptMessage = encrypt(inputMessage.value);
-        outputMessage.value = encryptMessage;
-        inputMessage.value = "";
-        switchOutputText(outputText.style.display)
+    if (!validateBlankMessage(inputMessage.value)) {
+        if (!validateMessage(inputMessage.value)) {
+            switchOutputInfo(outputInfo.style.display)
+            const encryptMessage = encrypt(inputMessage.value);
+            outputMessage.value = encryptMessage;
+            inputMessage.value = "";
+            switchOutputText(outputText.style.display);
+        }
     }
 }
 
 function btnDecrypt() {
-    switchOutputInfo(outputInfo.style.display)
-    const decryptMessage = decrypt(inputMessage.value);
-    outputMessage.value = decryptMessage;
-    inputMessage.value = "";
-    switchOutputText(outputText.style.display)
+    if (!validateBlankMessage(inputMessage.value)) {
+        switchOutputInfo(outputInfo.style.display)
+        const decryptMessage = decrypt(inputMessage.value);
+        outputMessage.value = decryptMessage;
+        inputMessage.value = "";
+        switchOutputText(outputText.style.display);
+    }
+
 }
 
 function btnCopy() {
